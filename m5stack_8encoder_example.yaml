@@ -1,0 +1,97 @@
+esphome:
+  name: m5stack-8encoder-example
+  platform: ESP32
+  board: esp32dev
+
+wifi:
+  ssid: "your_wifi_ssid"
+  password: "your_wifi_password"
+
+logger:
+
+api:
+  encryption:
+    key: "your_api_encryption_key"
+
+ota:
+
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+
+# M5Stack 8Encoder Hub
+m5stack_8encoder:
+  - id: encoder_hub
+    address: 0x41
+    
+# Encoder Count Sensors (all 8 encoders)
+sensor:
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 1
+    name: "Encoder 1 Count"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 2
+    name: "Encoder 2 Count"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 3
+    name: "Encoder 3 Count"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 4
+    name: "Encoder 4 Count"
+
+# Encoder Button Binary Sensors (with automatic device_class)
+binary_sensor:
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    type: button
+    channel: 1
+    name: "Encoder 1 Button"
+    on_press:
+      - logger.log: "Encoder 1 button pressed"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    type: button
+    channel: 2
+    name: "Encoder 2 Button"
+    on_press:
+      - logger.log: "Encoder 2 button pressed"
+      
+  # Toggle Switch
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    type: toggle
+    name: "Toggle Switch"
+    update_interval: 100ms
+    on_press:
+      - logger.log: "Toggle switch activated"
+
+# RGB LEDs for Encoders  
+light:
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 1
+    name: "Encoder 1 LED"
+    default_transition_length: 0ms
+    
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 2
+    name: "Encoder 2 LED"
+    default_transition_length: 0ms
+    
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 3
+    name: "Encoder 3 LED"
+    default_transition_length: 0ms
+    
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 4
+    name: "Encoder 4 LED"
+    default_transition_length: 0ms

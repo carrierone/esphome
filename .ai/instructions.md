@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # ESPHome AI Collaboration Guide
 
 This document provides essential context for AI models interacting with this project. Adhering to these guidelines will ensure consistency and maintain code quality.
@@ -174,17 +178,36 @@ This document provides essential context for AI models interacting with this pro
 ## 6. Development & Testing Workflow
 
 *   **Local Development Environment:** Use the provided Docker container or create a Python virtual environment and install dependencies from `requirements_dev.txt`.
-*   **Running Commands:** Use the `script/run-in-env.py` script to execute commands within the project's virtual environment. For example, to run the linter: `python3 script/run-in-env.py pre-commit run`.
-*   **Testing:**
-    *   **Python:** Run unit tests with `pytest`.
-    *   **C++:** Use `clang-tidy` for static analysis.
-    *   **Component Tests:** YAML-based compilation tests are located in `tests/`. The structure is as follows:
+
+*   **Essential Development Commands:**
+    *   **Virtual Environment Wrapper:** All commands should be run through `python3 script/run-in-env.py <command>` to ensure proper virtual environment activation.
+    *   **Linting & Formatting:**
+        - `python3 script/run-in-env.py pre-commit run` - Run all pre-commit hooks (ruff, flake8, pylint, clang-format, etc.)
+        - `python3 script/run-in-env.py pre-commit run --all-files` - Run pre-commit hooks on all files
+        - `script/lint-python` - Python-specific linting (ruff format, flake8, pylint, pyupgrade)
+        - `script/lint-cpp` - C++ linting and formatting (clang-tidy, clang-format)
+        - `python3 script/run-in-env.py ruff format` - Format Python code
+        - `python3 script/run-in-env.py ruff check --fix` - Fix ruff issues automatically
+    *   **Testing:**
+        - `python3 script/run-in-env.py pytest` - Run Python unit tests
+        - `python3 script/run-in-env.py pytest tests/unit_tests/` - Run specific unit tests
+        - `script/test_build_components` - Run component compilation tests for all platforms
+        - `script/test_build_components -c <component>` - Test specific component (e.g., `-c adc`)
+        - `script/test_build_components -t <target>` - Test specific target platform (e.g., `-t esp32-idf`)
+        - `script/test` - Run basic test suite (compiles all test YAML files)
+        - `script/fulltest` - Run comprehensive test suite
+    *   **ESPHome Commands:**
+        - `python3 -m esphome config <file>.yaml` - Validate configuration file
+        - `python3 -m esphome compile <file>.yaml` - Compile configuration without uploading
+        - `python3 -m esphome upload <file>.yaml` - Compile and upload to device
+        - `python3 -m esphome dashboard <config_dir>` - Start the web dashboard
+
+*   **Component Tests:** YAML-based compilation tests are located in `tests/`. The structure is as follows:
         ```
         tests/
         ├── test_build_components/ # Base test configurations
         └── components/[component]/ # Component-specific tests
         ```
-        Run them using `script/test_build_components`. Use `-c <component>` to test specific components and `-t <target>` for specific platforms.
 *   **Debugging and Troubleshooting:**
     *   **Debug Tools:**
         - `esphome config <file>.yaml` to validate configuration.
@@ -222,3 +245,13 @@ This document provides essential context for AI models interacting with this pro
     *   **Python:** When adding a new Python dependency, add it to the appropriate `requirements*.txt` file and `pyproject.toml`.
     *   **C++ / PlatformIO:** When adding a new C++ dependency, add it to `platformio.ini` and use `cg.add_library`.
     *   **Build Flags:** Use `cg.add_build_flag(...)` to add compiler flags.
+
+## 8. Important Development Notes
+
+*   **Python Version:** Requires Python 3.11+ (see `pyproject.toml`)
+*   **Command-Line Interface:** All ESPHome CLI commands work through `python3 -m esphome <command>` or the installed `esphome` script
+*   **Virtual Environment:** The `script/run-in-env.py` wrapper automatically detects and activates virtual environments (checks for `venv`, `.venv`, or `.` directories)
+*   **Platform Build Targets:** Component tests support multiple targets including `esp32-ard`, `esp32-idf`, `esp32-s2-idf`, `esp32-s3-idf`, `esp32-c3-idf`, `esp8266-ard`, `rp2040-ard`, `host`, etc. Use `script/test_build_components -t list` to see all available targets
+*   **Pre-commit Hooks:** The project uses extensive pre-commit hooks for code quality (ruff, flake8, pylint, clang-format, yamllint, pyupgrade). Always run before committing
+*   **Branch Strategy:** Main development happens on `dev` branch. PRs should target `dev`, not `main`
+*   **Component Dependencies:** Use the component metadata system (`DEPENDENCIES`, `AUTO_LOAD`, `CONFLICTS_WITH`, `CODEOWNERS`) to manage component relationships properly

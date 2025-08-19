@@ -13,11 +13,17 @@ This component provides support for the [M5Stack 8Encoder Unit](https://docs.m5s
 ## Configuration
 
 ```yaml
-# Example configuration
+# Example configuration for ESP32
 i2c:
   sda: 21
   scl: 22
   scan: true
+
+# For ESP32-S3, use different pins:
+# i2c:
+#   sda: 40
+#   scl: 41
+#   scan: true
 
 m5stack_8encoder:
   - id: my_8encoder
@@ -134,12 +140,12 @@ All standard [light](https://esphome.io/components/light/index.html) options are
 
 Connect the M5Stack 8Encoder to your ESP32/ESP8266 I2C bus:
 
-| 8Encoder Pin | ESP32 Pin | ESP8266 Pin |
-|--------------|-----------|-------------|
-| SDA | GPIO 21 | GPIO 4 |
-| SCL | GPIO 22 | GPIO 5 |
-| VCC | 3.3V/5V | 3.3V |
-| GND | GND | GND |
+| 8Encoder Pin | ESP32 Pin | ESP32-S3 Pin | ESP8266 Pin |
+|--------------|-----------|--------------|-------------|
+| SDA | GPIO 21 | GPIO 40 | GPIO 4 |
+| SCL | GPIO 22 | GPIO 41 | GPIO 5 |
+| VCC | 3.3V/5V | 3.3V/5V | 3.3V |
+| GND | GND | GND | GND |
 
 ## Error Handling & Reliability
 
