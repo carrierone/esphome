@@ -2,14 +2,16 @@
 name: Simple Validation
 
 on:
-  push:
-    paths:
-      - "esphome/components/m5stack_8encoder/**"
-      - "tests/components/m5stack_8encoder/**"
-  pull_request:
-    paths:
-      - "esphome/components/m5stack_8encoder/**"
-      - "tests/components/m5stack_8encoder/**"
+  # Temporarily disabled due to GitHub billing issues
+  # push:
+  #   paths:
+  #     - "esphome/components/m5stack_8encoder/**"
+  #     - "tests/components/m5stack_8encoder/**"
+  # pull_request:
+  #   paths:
+  #     - "esphome/components/m5stack_8encoder/**"
+  #     - "tests/components/m5stack_8encoder/**"
+  workflow_dispatch:
 
 permissions:
   contents: read
