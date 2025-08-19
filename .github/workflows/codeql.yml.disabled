@@ -1,0 +1,43 @@
+# CodeQL Advanced Security is a paid GitHub feature
+# This workflow has been disabled to avoid costs
+# To enable, rename this file back to codeql.yml and ensure you have GitHub Advanced Security
+
+name: "CodeQL Advanced (DISABLED)"
+
+on:
+  # Disabled to avoid paid GitHub Advanced Security features
+  # Uncomment the lines below if you have GitHub Advanced Security
+  # workflow_dispatch:
+  # schedule:
+  #   - cron: "30 18 * * 4"
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    if: false  # Always disabled
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: python
+            build-mode: none
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5.0.0
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"

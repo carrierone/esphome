@@ -14,7 +14,6 @@ on:
       - "!.yamllint"
       - "!.github/dependabot.yml"
       - "!docker/**"
-  merge_group:
 
 permissions:
   contents: read
@@ -113,24 +112,10 @@ jobs:
       matrix:
         python-version:
           - "3.11"
-          - "3.12"
-          - "3.13"
         os:
           - ubuntu-latest
-          - macOS-latest
-          - windows-latest
-        exclude:
-          # Minimize CI resource usage
-          # by only running the Python version
-          # version used for docker images on Windows and macOS
-          - python-version: "3.13"
-            os: windows-latest
-          - python-version: "3.12"
-            os: windows-latest
-          - python-version: "3.13"
-            os: macOS-latest
-          - python-version: "3.12"
-            os: macOS-latest
+        # Reduced matrix for free tier - only test core combination
+        # Full matrix testing is available on the main ESPHome repository
     runs-on: ${{ matrix.os }}
     needs:
       - common
@@ -156,6 +141,7 @@ jobs:
           . venv/bin/activate
           pytest -vv --cov-report=xml --tb=native -n auto tests --ignore=tests/integration/
       - name: Upload coverage to Codecov
+        if: ${{ secrets.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v5.4.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -252,7 +238,6 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     strategy:
       fail-fast: false
-      max-parallel: 2
       matrix:
         include:
           - id: clang-tidy
@@ -364,7 +349,6 @@ jobs:
     if: github.event_name == 'pull_request' && fromJSON(needs.determine-jobs.outputs.component-test-count) > 0 && fromJSON(needs.determine-jobs.outputs.component-test-count) < 100
     strategy:
       fail-fast: false
-      max-parallel: 2
       matrix:
         file: ${{ fromJson(needs.determine-jobs.outputs.changed-components) }}
     steps:
@@ -417,7 +401,6 @@ jobs:
     if: github.event_name == 'pull_request' && fromJSON(needs.determine-jobs.outputs.component-test-count) >= 100
     strategy:
       fail-fast: false
-      max-parallel: 4
       matrix:
         components: ${{ fromJson(needs.test-build-components-splitter.outputs.matrix) }}
     steps:

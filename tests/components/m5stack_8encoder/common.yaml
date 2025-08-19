@@ -1,0 +1,53 @@
+i2c:
+  - id: i2c_m5stack_8encoder
+    scl: ${scl_pin}
+    sda: ${sda_pin}
+
+m5stack_8encoder:
+  - id: encoder_hub
+    address: 0x41
+
+sensor:
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 1
+    name: "Encoder 1 Count"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 2
+    name: "Encoder 2 Count"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 8
+    name: "Encoder 8 Count"
+
+binary_sensor:
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    type: button
+    channel: 1
+    name: "Encoder 1 Button"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    type: button
+    channel: 8
+    name: "Encoder 8 Button"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    type: toggle
+    channel: 1
+    name: "Toggle Switch"
+
+light:
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 1
+    name: "Encoder 1 LED"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 4
+    name: "Encoder 4 LED"
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: encoder_hub
+    channel: 8
+    name: "Encoder 8 LED"
