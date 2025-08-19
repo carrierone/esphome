@@ -2,6 +2,26 @@
 
 This component provides support for the [M5Stack 8Encoder Unit](https://docs.m5stack.com/en/unit/8encoder), which features 8 digital rotary encoders with RGB LEDs and push buttons connected via I2C.
 
+## Purchase & Documentation Links
+
+### Purchasing
+- **🛒 M5Stack Official Store**: [8-Encoder Unit](https://shop.m5stack.com/products/8-encoder-unit)
+- **🌍 M5Stack Global Store**: [8-Encoder Unit International](https://m5stack.com/products/8-encoder-unit)
+- **🛒 Alternative Retailers**: Available on Amazon, AliExpress, and electronics distributors worldwide
+
+### Official Resources
+- **📖 Documentation**: [M5Stack 8Encoder Unit Docs](https://docs.m5stack.com/en/unit/8encoder)
+- **📋 Datasheet**: [Technical Specifications & Schematic PDF](https://static-cdn.m5stack.com/resource/docs/datasheet/unit/8ENCODER/8ENCODER_datasheet_en.pdf)
+- **💻 Arduino Library**: [M5Unit-8Encoder GitHub Repository](https://github.com/m5stack/M5Unit-8Encoder)
+- **🎥 Tutorials**: [M5Stack YouTube Channel](https://www.youtube.com/c/M5Stack)
+
+### Hardware Information
+- **📱 Product Code**: U167
+- **📏 Dimensions**: 48mm × 24mm × 12.8mm
+- **⚡ Power**: 5V DC, ~200mA max (all LEDs on)
+- **🔧 MCU**: [STM32F030 ARM Cortex-M0](https://www.st.com/en/microcontrollers-microprocessors/stm32f030.html)
+- **📞 Support**: [M5Stack Official Support](https://m5stack.com/pages/contact-us)
+
 ## Hardware Features
 
 - 8 digital rotary encoders (endless rotation)
