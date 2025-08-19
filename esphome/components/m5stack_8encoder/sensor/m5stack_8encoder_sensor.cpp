@@ -1,5 +1,6 @@
 #include "m5stack_8encoder_sensor.h"
 #include "esphome/core/log.h"
+#include <climits>
 
 namespace esphome {
 namespace m5stack_8encoder {

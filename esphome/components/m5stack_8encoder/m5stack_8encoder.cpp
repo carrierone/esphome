@@ -2,6 +2,7 @@
 #include "esphome/core/hal.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
+#include <climits>
 
 namespace esphome {
 namespace m5stack_8encoder {
@@ -137,9 +138,11 @@ bool M5Stack8EncoderComponent::set_all_leds_color(uint8_t red, uint8_t green, ui
   
   if (err != i2c::NO_ERROR) {
     ESP_LOGE(TAG, "Failed to set all LED colors: %02X", err);
+    this->status_set_warning("I2C communication failed");
     return false;
   }
 
+  this->status_clear_warning();
   return true;
 }
 
