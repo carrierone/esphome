@@ -27,6 +27,7 @@ This component provides support for the [M5Stack 8Encoder Unit](https://docs.m5s
 - 8 digital rotary encoders (endless rotation)
 - 8 RGB LEDs (one per encoder)
 - 8 push buttons (one per encoder)
+- 1 slide switch (device-wide toggle)
 - I2C communication interface (address: 0x41)
 - STM32F030 microcontroller
 
@@ -79,6 +80,13 @@ binary_sensor:
     type: button
     update_interval: 50ms
 
+  # Device-wide slide switch (no channel needed)
+  - platform: m5stack_8encoder
+    m5stack_8encoder_id: my_8encoder
+    name: "Slide Switch"
+    type: toggle
+    update_interval: 50ms
+
 # RGB LED control
 light:
   - platform: m5stack_8encoder
@@ -116,8 +124,8 @@ All standard [sensor](https://esphome.io/components/sensor/index.html) options a
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `m5stack_8encoder_id` | ID | | ID of the M5Stack 8Encoder component |
-| `channel` | int | | Button channel (1-8) |
-| `type` | enum | `button` | Type: `button` or `switch` |
+| `channel` | int | | Button channel (1-8). **Not used for `toggle` type** |
+| `type` | enum | `button` | Type: `button` or `toggle` |
 | `update_interval` | time | `50ms` | How often to read the button state |
 
 All standard [binary sensor](https://esphome.io/components/binary_sensor/index.html) options are also available.
@@ -140,10 +148,15 @@ All standard [light](https://esphome.io/components/light/index.html) options are
 - Failed reads return a special error value
 
 ### Button States  
-- **`button` type**: Momentary press detection - ideal for triggering actions
-- **`toggle` type**: Toggle state - press to change between on/off states
-- Both types require a `channel` specification (1-8)
-- Fast update intervals (50ms) recommended for responsive button detection
+- **`button` type**: Momentary press detection - ideal for triggering actions (requires `channel` 1-8)
+- **`toggle` type**: Device-wide slide switch - physical slide switch on the unit (no `channel` needed)
+- Fast update intervals (50ms) recommended for responsive detection
+
+### Slide Switch
+- **Hardware**: Physical slide switch on the M5Stack 8Encoder unit
+- **Type**: Use `type: toggle` in binary sensor configuration  
+- **States**: Returns `true` when switch is in position 1, `false` when in position 0
+- **Global**: Affects the entire device, not tied to any specific encoder channel
 
 ### RGB LEDs
 - Individual control per encoder channel
@@ -184,7 +197,8 @@ The component includes comprehensive error handling:
 
 **Entity Types Created**:
 - **Sensors**: `sensor.encoder_X_count` - Encoder count values with rotation icon
-- **Binary Sensors**: `binary_sensor.encoder_X_button` - Button states with automatic button device class  
+- **Binary Sensors**: `binary_sensor.encoder_X_button` - Button states with automatic button device class
+- **Binary Sensors**: `binary_sensor.slide_switch` - Device-wide slide switch state
 - **Lights**: `light.encoder_X_led` - Individual RGB LED controls with full color support
 
 **Home Assistant Features**:

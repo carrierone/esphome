@@ -29,7 +29,11 @@ void M5Stack8EncoderBinarySensor::update() {
 void M5Stack8EncoderBinarySensor::dump_config() {
   ESP_LOGCONFIG(TAG, "M5Stack 8Encoder Binary Sensor:");
   ESP_LOGCONFIG(TAG, "  Type: %s", this->type_.c_str());
-  ESP_LOGCONFIG(TAG, "  Channel: %d", this->channel_ + 1);  // Display as 1-based
+  if (this->type_ == "button") {
+    ESP_LOGCONFIG(TAG, "  Channel: %d", this->channel_ + 1);  // Display as 1-based
+  } else if (this->type_ == "toggle") {
+    ESP_LOGCONFIG(TAG, "  Device: Slide Switch");
+  }
   LOG_BINARY_SENSOR("  ", "State", this);
   LOG_UPDATE_INTERVAL(this);
 }

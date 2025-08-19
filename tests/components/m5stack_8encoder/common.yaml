@@ -35,8 +35,7 @@ binary_sensor:
   - platform: m5stack_8encoder
     m5stack_8encoder_id: encoder_hub
     type: toggle
-    channel: 1
-    name: "Toggle Switch"
+    name: "Slide Switch"
 
 light:
   - platform: m5stack_8encoder

@@ -21,9 +21,11 @@ BINARY_SENSOR_TYPES = {
 
 
 def validate_config(config):
-    # Both button and toggle types require a channel (1-8)
-    if CONF_CHANNEL not in config:
-        raise cv.Invalid("Channel must be specified")
+    # Button type requires a channel (1-8), toggle type does not
+    if config[CONF_TYPE] == CONF_BUTTON and CONF_CHANNEL not in config:
+        raise cv.Invalid("Channel must be specified for button type")
+    if config[CONF_TYPE] == CONF_TOGGLE and CONF_CHANNEL in config:
+        raise cv.Invalid("Channel should not be specified for toggle type (slide switch is device-wide)")
     return config
 
 
@@ -33,7 +35,7 @@ CONFIG_SCHEMA = cv.All(
             cv.GenerateID(): cv.declare_id(M5Stack8EncoderBinarySensor),
             cv.GenerateID(CONF_M5STACK_8ENCODER_ID): cv.use_id(M5Stack8EncoderComponent),
             cv.Required(CONF_TYPE): cv.enum(BINARY_SENSOR_TYPES, lower=True),
-            cv.Required(CONF_CHANNEL): cv.int_range(min=1, max=8),
+            cv.Optional(CONF_CHANNEL): cv.int_range(min=1, max=8),
         }
     )
     .extend(binary_sensor.binary_sensor_schema(M5Stack8EncoderBinarySensor))
@@ -53,4 +55,5 @@ async def to_code(config):
     
     cg.add(var.set_type(config[CONF_TYPE]))
     
-    cg.add(var.set_channel(config[CONF_CHANNEL] - 1))  # Convert to 0-based index
+    if CONF_CHANNEL in config:
+        cg.add(var.set_channel(config[CONF_CHANNEL] - 1))  # Convert to 0-based index
